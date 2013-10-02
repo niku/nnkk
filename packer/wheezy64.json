@@ -1,0 +1,41 @@
+{
+  "builders": [{
+    "type": "virtualbox",
+    "iso_checksum_type": "sha256",
+    "iso_checksum": "62232b8adc281c04f9985e4a1541481a468b3b2ca1702a0dd7f62fcf56ef101b",
+    "iso_url": "http://cdimage.debian.org/debian-cd/7.1.0/amd64/iso-cd/debian-7.1.0-amd64-netinst.iso",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "http_directory": "./",
+    "boot_command": [
+      "<esc>",
+      "<wait>",
+      "install ",
+      "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US ",
+      "auto ",
+      "locale=en_US ",
+      "kbd-chooser/method=us ",
+      "netcfg/get_hostname={{ .Name }} ",
+      "netcfg/get_domain=vagrantup.com ",
+      "fb=false ",
+      "debconf/frontend=noninteractive ",
+      "console-setup/ask_detect=false ",
+      "console-keymaps-at/keymap=us ",
+      "keyboard-configuration/xkb-keymap=us ",
+      "<enter>"
+    ],
+    "shutdown_command": "sudo shutdown -h now"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "scripts": [
+      "base.sh",
+      "chef.sh",
+      "vagrant.sh"
+    ]
+  }],
+  "post-processors": [{
+    "type": "vagrant"
+  }]
+}
